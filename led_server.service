@@ -1,0 +1,9 @@
+[Unit]
+Description=NUC LED Server                 
+
+[Service]
+Type=simple
+ExecStart=/opt/led_server/led_server.py
+
+[Install]
+WantedBy=multi-user.target
