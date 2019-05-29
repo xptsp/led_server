@@ -9,6 +9,7 @@ def generate_key(length):
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
     
 MY_PORT = 9000
+USE_KEY = false
 API_KEY = generate_key(16)
 CFG_PATH = os.path.dirname(os.path.realpath(__file__))
 print "Automatically generated API Key: " + API_KEY
@@ -78,7 +79,7 @@ class myHandler(BaseHTTPRequestHandler):
 			params = parse_qs(urlparse(self.path).query)
 			api = str(params.get("api", None))
 			api = api.replace('[', '').replace(']', '').replace("'", "")
-			if api == API_KEY:
+			if not USE_KEY or api == API_KEY:
 				if save_module_params():
 					self.wfile.write("Module configuration saved to file!")
 				else:
@@ -97,7 +98,7 @@ class myHandler(BaseHTTPRequestHandler):
 			params = parse_qs(urlparse(self.path).query)
 			api = str(params.get("api", None))
 			api = api.replace('[', '').replace(']', '').replace("'", "")
-			if api == API_KEY:
+			if not USE_KEY or api == API_KEY:
 				if load_module_params():
 					self.wfile.write("Module configuration loaded from file!")
 				else:
@@ -116,7 +117,7 @@ class myHandler(BaseHTTPRequestHandler):
 			params = parse_qs(urlparse(self.path).query)
 			api = str(params.get("api", None))
 			api = api.replace('[', '').replace(']', '').replace("'", "")
-			if api == API_KEY:
+			if not USE_KEY or api == API_KEY:
 				which = str(params.get("which", None))
 				bright = str(params.get("brightness", params.get("bright", 100)))
 				fade = str(params.get("fade", "none"))
@@ -146,7 +147,7 @@ class myHandler(BaseHTTPRequestHandler):
 			params = parse_qs(urlparse(self.path).query)
 			api = str(params.get("api", None))
 			api = api.replace('[', '').replace(']', '').replace("'", "")
-			if api == API_KEY:
+			if not USE_KEY or api == API_KEY:
 				profile = str(params.get("profile", "current"))
 				profile = profile.replace("'", "").replace("[", "").replace("]", "")
 				
